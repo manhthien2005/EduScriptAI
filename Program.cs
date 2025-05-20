@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Add DbContext
-builder.Services.AddDbContext<EduScriptContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add HttpClient
 builder.Services.AddHttpClient();
@@ -50,7 +50,7 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<EduScriptContext>();
+    var context = services.GetRequiredService<ApplicationDbContext>();
     context.Database.EnsureCreated();
 }
 
